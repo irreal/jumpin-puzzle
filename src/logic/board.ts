@@ -32,3 +32,8 @@ export function addGameObject(board: Board, gameObject: GameObject): Board {
   newBoard.gameObjects = [...newBoard.gameObjects, gameObject];
   return newBoard;
 }
+export function addGameObjects(board: Board, gameObjects: GameObject[]): Board {
+  const newBoard = cloneBoard(board);
+  newBoard.gameObjects = [...newBoard.gameObjects, ...gameObjects];
+  return newBoard;
+}
