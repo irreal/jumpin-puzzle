@@ -52,6 +52,10 @@ export function addTestObjects(board: Board): Board {
       { x: 3, y: 1 },
       { x: 3, y: 2 },
     ]),
+    createGameObject(GameObjectType.Fox, [
+      { x: 3, y: 4 },
+      { x: 4, y: 4 },
+    ]),
   ]);
   return newBoard;
 }

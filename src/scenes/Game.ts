@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { createField, createGameObject } from "../gameObjects/createBoard";
 import { addTestObjects, createStandardBoard } from "../logic/template-boards";
-import { Board, GameObject, GameObjectType } from "../logic/types";
+import { Board } from "../logic/types";
 
 export default class Demo extends Phaser.Scene {
   constructor(private graphics: Phaser.GameObjects.Graphics) {

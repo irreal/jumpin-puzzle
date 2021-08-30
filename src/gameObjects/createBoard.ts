@@ -1,5 +1,9 @@
 import { Board, Field, GameObject, GameObjectType } from "../logic/types";
-import { handleBunnyDrag, handleBunnyDrop } from "./bunnyDrag";
+import {
+  handleBunnyDrag,
+  handleBunnyDragging,
+  handleBunnyDrop,
+} from "./bunnyDrag";
 
 export function createField(
   graphics: Phaser.GameObjects.Graphics,
@@ -45,63 +49,86 @@ export function createGameObject(
   width: number,
   height: number
 ) {
-  gameObject.coordinates.forEach((c, index) => {
-    switch (gameObject.type) {
-      case GameObjectType.Bunny:
-        let bunnySprite = scene.add
-          .image(
-            startX + c.x * width + width / 2,
-            startY + c.y * height + height / 2 - 15,
-            "rabbit"
-          )
-          .setInteractive();
-        bunnySprite.setScale(0.3);
-        scene.input.setDraggable(bunnySprite);
-        bunnySprite.setData("dragcallback", () => {
-          handleBunnyDrag(
-            scene,
-            bunnySprite,
-            startX,
-            startY,
-            width,
-            height,
-            gameObject,
-            board
-          );
-        });
-        bunnySprite.setData("dropcallback", (pointer: Phaser.Input.Pointer) => {
-          handleBunnyDrop(
-            scene,
-            bunnySprite,
-            startX,
-            startY,
-            width,
-            height,
-            pointer,
-            gameObject,
-            board
-          );
-        });
-        break;
-      case GameObjectType.Mushroom:
-        const mushroomSprite = scene.add.image(
+  switch (gameObject.type) {
+    case GameObjectType.Bunny:
+      const c = gameObject.coordinates[0];
+      let bunnySprite = scene.add
+        .image(
           startX + c.x * width + width / 2,
-          startY + c.y * height + height / 2 - 5,
-          "mushroom"
+          startY + c.y * height + height / 2 - 15,
+          "rabbit"
+        )
+        .setInteractive();
+      bunnySprite.setScale(0.3);
+      scene.input.setDraggable(bunnySprite);
+      bunnySprite.setData("dragcallback", () => {
+        handleBunnyDrag(
+          scene,
+          bunnySprite,
+          startX,
+          startY,
+          width,
+          height,
+          gameObject,
+          board
         );
-        mushroomSprite.setScale(0.06);
-        break;
-      case GameObjectType.Fox:
-        const foxSprite = scene.add
-          .image(
-            startX + c.x * width + width / 2,
-            startY + c.y * height + height / 2,
-            "fox"
-          )
-          .setInteractive();
-        foxSprite.setScale(0.3);
-        scene.input.setDraggable(foxSprite);
-        break;
-    }
-  });
+      });
+      bunnySprite.setData("dropcallback", (pointer: Phaser.Input.Pointer) => {
+        handleBunnyDrop(
+          scene,
+          bunnySprite,
+          startX,
+          startY,
+          width,
+          height,
+          pointer,
+          gameObject,
+          board
+        );
+      });
+      bunnySprite.setData(
+        "draggingcallback",
+        (dragX: number, dragY: number) => {
+          handleBunnyDragging(
+            scene,
+            bunnySprite,
+            startX,
+            startY,
+            width,
+            height,
+            dragX,
+            dragY,
+            gameObject,
+            board
+          );
+        }
+      );
+      break;
+    case GameObjectType.Mushroom:
+      const cM = gameObject.coordinates[0];
+      const mushroomSprite = scene.add.image(
+        startX + cM.x * width + width / 2,
+        startY + cM.y * height + height / 2 - 5,
+        "mushroom"
+      );
+      mushroomSprite.setScale(0.06);
+      break;
+    case GameObjectType.Fox:
+      const c1 = gameObject.coordinates[0];
+      const c2 = gameObject.coordinates[1];
+      const horizontal = c2.x > c1.x;
+      const foxSprite = scene.add
+        .image(
+          startX + c1.x * width + width / 2 + (horizontal ? 50 : 0),
+          startY + c1.y * height + height / 2 + (horizontal ? 0 : 30),
+          "fox"
+        )
+        .setInteractive();
+      foxSprite.setScale(0.2);
+      if (!horizontal) {
+        foxSprite.setRotation(1.5708);
+      }
+      scene.input.setDraggable(foxSprite);
+      break;
+  }
 }
