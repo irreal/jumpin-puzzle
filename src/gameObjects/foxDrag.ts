@@ -60,7 +60,8 @@ export function handleFoxDrop(
   height: number,
   pointer: Phaser.Input.Pointer,
   gameObject: GameObject,
-  board: Board
+  board: Board,
+  incMoves: () => void
 ) {
   const moves = getValidMoveTarget(board, gameObject);
   const currentField = getFieldByPoint(
@@ -77,6 +78,12 @@ export function handleFoxDrop(
       (m) => m.coordinate.x == newFieldX && m.coordinate.y == newFieldY
     )
   ) {
+    if (
+      currentField.coordinate.x !== newFieldX ||
+      currentField.coordinate.y !== newFieldY
+    ) {
+      incMoves();
+    }
     gameObject.coordinates[0] = {
       x: newFieldX,
       y: newFieldY,

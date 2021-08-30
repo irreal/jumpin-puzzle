@@ -17,6 +17,9 @@ export default class Demo extends Phaser.Scene {
   startingObjects?: GameObject[];
   madeMoves = false;
   winText?: Phaser.GameObjects.GameObject;
+  moveCountText?: Phaser.GameObjects.GameObject;
+
+  moveCount = 0;
 
   preload() {
     this.load.image("rabbit", "assets/rabbit.png");
@@ -34,6 +37,7 @@ export default class Demo extends Phaser.Scene {
     this.board = createStandardBoard();
     this.board = addGameObjects(this.board, data.gameObjects);
     this.madeMoves = false;
+    this.moveCount = 0;
   }
 
   create() {
@@ -56,7 +60,10 @@ export default class Demo extends Phaser.Scene {
         this.madeMoves = true;
         const handler = gameObject.getData("dropcallback");
         if (handler) {
-          handler(pointer);
+          handler(pointer, () => {
+            this.moveCount++;
+            this.updateMoveCountText();
+          });
           if (gameWon(this.board!)) {
             this.winText = this.add.text(40, 300, "POBEDIO SI IGRICU, BRAVO!", {
               fontSize: "50px",
@@ -90,7 +97,7 @@ export default class Demo extends Phaser.Scene {
     if (this.board) {
       this.createBoard(this.board);
     }
-    this.add.text(10, 30, "Escape za restart nivoa ili izlazak u glavni meni", {
+    this.add.text(10, 10, "Escape za restart nivoa ili izlazak u glavni meni", {
       font: "16px Arial",
     });
   }
@@ -107,5 +114,20 @@ export default class Demo extends Phaser.Scene {
     board.gameObjects.forEach((go) => {
       createGameObject(this, go, board, startX, startY, width, height);
     });
+  }
+
+  updateMoveCountText(): void {
+    if (!this.moveCountText) {
+      this.moveCountText = this.add.text(
+        40,
+        40,
+        `broj poteza: ${this.moveCount}`,
+        { fontSize: "40px" }
+      );
+    } else {
+      (
+        this.moveCountText as Phaser.GameObjects.Text
+      ).text = `broj poteza: ${this.moveCount}`;
+    }
   }
 }

@@ -18,7 +18,7 @@ export function handleBunnyDrag(
     const c = f.coordinate;
     let bunnySprite = scene.add.image(
       startX + c.x * width + width / 2,
-      startY + c.y * height + height / 2 - 15,
+      startY + c.y * height + height / 2 - 5,
       "rabbit"
     );
     bunnySprite.setScale(0.3);
@@ -37,7 +37,8 @@ export function handleBunnyDrop(
   height: number,
   pointer: Phaser.Input.Pointer,
   gameObject: GameObject,
-  board: Board
+  board: Board,
+  incMoves: () => void
 ) {
   const dropTargetObjects: Phaser.GameObjects.GameObject[] =
     bunny.getData("dropTargetObjects") || [];
@@ -60,14 +61,15 @@ export function handleBunnyDrop(
     gameObject.coordinates[0].y = targetField.coordinate.y;
     bunny.setPosition(
       startX + targetField.coordinate.x * width + width / 2,
-      startY + targetField.coordinate.y * height + height / 2 - 15
+      startY + targetField.coordinate.y * height + height / 2 - 5
     );
+    incMoves();
   } else {
     gameObject.coordinates[0].x = originalField.coordinate.x;
     gameObject.coordinates[0].y = originalField.coordinate.y;
     bunny.setPosition(
       startX + originalField.coordinate.x * width + width / 2,
-      startY + originalField.coordinate.y * height + height / 2 - 15
+      startY + originalField.coordinate.y * height + height / 2 - 5
     );
   }
 }

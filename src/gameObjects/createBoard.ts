@@ -74,19 +74,23 @@ export function createGameObject(
           board
         );
       });
-      bunnySprite.setData("dropcallback", (pointer: Phaser.Input.Pointer) => {
-        handleBunnyDrop(
-          scene,
-          bunnySprite,
-          startX,
-          startY,
-          width,
-          height,
-          pointer,
-          gameObject,
-          board
-        );
-      });
+      bunnySprite.setData(
+        "dropcallback",
+        (pointer: Phaser.Input.Pointer, incMoves: () => void) => {
+          handleBunnyDrop(
+            scene,
+            bunnySprite,
+            startX,
+            startY,
+            width,
+            height,
+            pointer,
+            gameObject,
+            board,
+            incMoves
+          );
+        }
+      );
       bunnySprite.setData(
         "draggingcallback",
         (dragX: number, dragY: number) => {
@@ -142,19 +146,23 @@ export function createGameObject(
           board
         );
       });
-      foxSprite.setData("dropcallback", (pointer: Phaser.Input.Pointer) => {
-        handleFoxDrop(
-          scene,
-          foxSprite,
-          startX,
-          startY,
-          width,
-          height,
-          pointer,
-          gameObject,
-          board
-        );
-      });
+      foxSprite.setData(
+        "dropcallback",
+        (pointer: Phaser.Input.Pointer, incMoves: () => void) => {
+          handleFoxDrop(
+            scene,
+            foxSprite,
+            startX,
+            startY,
+            width,
+            height,
+            pointer,
+            gameObject,
+            board,
+            incMoves
+          );
+        }
+      );
       foxSprite.setData("draggingcallback", (dragX: number, dragY: number) => {
         handleFoxDragging(
           scene,
