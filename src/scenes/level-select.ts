@@ -31,7 +31,11 @@ export default class LevelSelectScene extends Phaser.Scene {
       );
       lvlText.setInteractive();
       lvlText.on("pointerdown", () => {
-        this.scene.start("GameScene", { id: l.id, gameObjects: l.gameObjects });
+        this.scene.start("GameScene", {
+          id: l.id,
+          gameObjects: l.gameObjects,
+          name: l.name,
+        });
       });
       lvlText.on("pointerover", () => {
         const bunny = this.add

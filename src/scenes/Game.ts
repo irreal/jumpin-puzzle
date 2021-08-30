@@ -19,6 +19,7 @@ export default class Demo extends Phaser.Scene {
   winText?: Phaser.GameObjects.GameObject;
   moveCountText?: Phaser.GameObjects.GameObject;
   levelId?: string;
+  levelName?: string;
 
   moveCount = 0;
 
@@ -36,6 +37,13 @@ export default class Demo extends Phaser.Scene {
     }
     if (data && data.id) {
       this.levelId = data.id;
+    } else {
+      this.levelId = undefined;
+    }
+    if (data && data.name) {
+      this.levelName = data.name;
+    } else {
+      this.levelName = undefined;
     }
     this.startingObjects = cloneGameObjects(data.gameObjects);
     this.board = createStandardBoard();
@@ -102,11 +110,21 @@ export default class Demo extends Phaser.Scene {
     if (this.board) {
       this.createBoard(this.board);
     }
-    this.add.text(10, 10, "Escape za restart nivoa ili izlazak u glavni meni", {
-      font: "16px Arial",
-    });
+    this.add.text(
+      10,
+      550,
+      "Escape za restart nivoa ili izlazak u glavni meni",
+      {
+        font: "16px Arial",
+      }
+    );
+    if (this.levelName) {
+      this.add.text(10, 10, this.levelName, {
+        font: "16px Arial",
+      });
+    }
     this.moveCountText = this.add.text(
-      40,
+      10,
       40,
       `broj poteza: ${this.moveCount}`,
       { fontSize: "40px" }

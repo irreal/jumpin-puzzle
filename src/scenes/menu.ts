@@ -6,9 +6,24 @@ export default class MenuScene extends Phaser.Scene {
     super("MenuScene");
   }
 
-  preload() {}
+  preload() {
+    this.load.image("rabbit", "assets/rabbit.png");
+  }
 
   create() {
+    const bunny = this.add.image(400, 450, "rabbit");
+    bunny.setScale(0.8);
+    this.tweens.add({
+      targets: bunny,
+      scaleX: 1.1,
+      scaleY: 1.1,
+      yoyo: true,
+      repeat: true,
+      ease: "Sine.easeInOut",
+      duration: 3000,
+    });
+    bunny.setTint(0xffffff, 0xe18532, 0xa6a9ac, 0xa6a9ac);
+    this.add.text(250, 10, "Skaču zecovi", { fontSize: "50px" });
     const creatorButton = this.add.text(100, 100, "Kreiraj nivo", {
       fontSize: "42px",
     });

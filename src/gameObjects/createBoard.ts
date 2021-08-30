@@ -52,6 +52,23 @@ export function createGameObject(
 ): Phaser.GameObjects.GameObject {
   switch (gameObject.type) {
     case GameObjectType.Bunny:
+      let bunnyIndex = 0;
+      for (let i = 0; i < board.gameObjects.length; i++) {
+        const go = board.gameObjects[i];
+        if (go.type !== GameObjectType.Bunny) {
+          continue;
+        }
+        if (
+          go.coordinates[0].x !== gameObject.coordinates[0].x ||
+          go.coordinates[0].y !== gameObject.coordinates[0].y
+        ) {
+          bunnyIndex++;
+        } else {
+          break;
+        }
+      }
+      console.log("creating bunny...", bunnyIndex);
+      const colors = [0xffffff, 0xe18532, 0xa6a9ac];
       const c = gameObject.coordinates[0];
       let bunnySprite = scene.add
         .image(
@@ -60,6 +77,7 @@ export function createGameObject(
           "rabbit"
         )
         .setInteractive();
+      bunnySprite.setTint(colors[bunnyIndex % 3]);
       bunnySprite.setScale(0.3);
       scene.input.setDraggable(bunnySprite);
       bunnySprite.setData("dragcallback", () => {
