@@ -4,6 +4,7 @@ import {
   handleBunnyDragging,
   handleBunnyDrop,
 } from "./bunnyDrag";
+import { handleFoxDrag, handleFoxDragging, handleFoxDrop } from "./foxDrag";
 
 export function createField(
   graphics: Phaser.GameObjects.Graphics,
@@ -48,14 +49,14 @@ export function createGameObject(
   startY: number,
   width: number,
   height: number
-) {
+): Phaser.GameObjects.GameObject {
   switch (gameObject.type) {
     case GameObjectType.Bunny:
       const c = gameObject.coordinates[0];
       let bunnySprite = scene.add
         .image(
           startX + c.x * width + width / 2,
-          startY + c.y * height + height / 2 - 15,
+          startY + c.y * height + height / 2 - 5,
           "rabbit"
         )
         .setInteractive();
@@ -103,7 +104,7 @@ export function createGameObject(
           );
         }
       );
-      break;
+      return bunnySprite;
     case GameObjectType.Mushroom:
       const cM = gameObject.coordinates[0];
       const mushroomSprite = scene.add.image(
@@ -111,8 +112,8 @@ export function createGameObject(
         startY + cM.y * height + height / 2 - 5,
         "mushroom"
       );
-      mushroomSprite.setScale(0.06);
-      break;
+      mushroomSprite.setScale(0.045);
+      return mushroomSprite;
     case GameObjectType.Fox:
       const c1 = gameObject.coordinates[0];
       const c2 = gameObject.coordinates[1];
@@ -129,6 +130,45 @@ export function createGameObject(
         foxSprite.setRotation(1.5708);
       }
       scene.input.setDraggable(foxSprite);
-      break;
+      foxSprite.setData("dragcallback", () => {
+        handleFoxDrag(
+          scene,
+          foxSprite,
+          startX,
+          startY,
+          width,
+          height,
+          gameObject,
+          board
+        );
+      });
+      foxSprite.setData("dropcallback", (pointer: Phaser.Input.Pointer) => {
+        handleFoxDrop(
+          scene,
+          foxSprite,
+          startX,
+          startY,
+          width,
+          height,
+          pointer,
+          gameObject,
+          board
+        );
+      });
+      foxSprite.setData("draggingcallback", (dragX: number, dragY: number) => {
+        handleFoxDragging(
+          scene,
+          foxSprite,
+          startX,
+          startY,
+          width,
+          height,
+          dragX,
+          dragY,
+          gameObject,
+          board
+        );
+      });
+      return foxSprite;
   }
 }

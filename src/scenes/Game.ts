@@ -1,6 +1,10 @@
 import Phaser from "phaser";
 import { createField, createGameObject } from "../gameObjects/createBoard";
-import { addTestObjects, createStandardBoard } from "../logic/template-boards";
+import {
+  addMaster1Objects,
+  addTestObjects,
+  createStandardBoard,
+} from "../logic/template-boards";
 import { Board } from "../logic/types";
 
 export default class Demo extends Phaser.Scene {
@@ -39,13 +43,15 @@ export default class Demo extends Phaser.Scene {
     );
     this.input.on(
       "drag",
-      function (pointer: any, gameObject: any, dragX: number, dragY: number) {
-        gameObject.x = dragX;
-        gameObject.y = dragY;
+      function (_: any, gameObject: any, dragX: number, dragY: number) {
+        const handler = gameObject.getData("draggingcallback");
+        if (handler) {
+          handler(dragX, dragY);
+        }
       }
     );
 
-    const board = addTestObjects(createStandardBoard());
+    const board = addMaster1Objects(createStandardBoard());
     this.createBoard(board);
   }
 

@@ -21,9 +21,100 @@ export function getValidMoveTarget(
   switch (object.type) {
     case GameObjectType.Bunny:
       return getValidMoveTargetForBunny(board, object);
+    case GameObjectType.Fox:
+      return getValidMoveTargetForFox(board, object);
     default:
       return [];
   }
+}
+
+function getValidMoveTargetForFox(board: Board, fox: GameObject): Field[] {
+  const headField = getFieldByPoint(
+    board,
+    fox.coordinates[0].x,
+    fox.coordinates[0].y
+  )!;
+  const tailField = getFieldByPoint(
+    board,
+    fox.coordinates[1].x,
+    fox.coordinates[1].y
+  )!;
+  const horizontal = tailField.coordinate.x > headField.coordinate.x;
+
+  if (horizontal) {
+    return getValidMoveTargetForFoxHorizontal(board, headField);
+  } else {
+    return getValidMoveTargetForFoxVertical(board, headField);
+  }
+}
+
+function getValidMoveTargetForFoxHorizontal(
+  board: Board,
+  headField: Field
+): Field[] {
+  const moves: Field[] = [];
+  for (let i = -1; i <= 1; i += 2) {
+    let index = i < 0 ? 1 : 2;
+    while (true) {
+      const field = getFieldByPoint(
+        board,
+        headField.coordinate.x + i * index,
+        headField.coordinate.y
+      );
+      if (!field) {
+        break;
+      }
+      const object = getFieldObject(board, field);
+      if (!object) {
+        moves.push(
+          getFieldByPoint(
+            board,
+            field.coordinate.x - (i < 0 ? 0 : 1),
+            field.coordinate.y
+          )!
+        );
+      } else {
+        break;
+      }
+      index++;
+    }
+  }
+  return moves;
+}
+
+function getValidMoveTargetForFoxVertical(
+  board: Board,
+  headField: Field
+): Field[] {
+  console.log("getting vertical");
+  const moves: Field[] = [];
+  for (let i = -1; i <= 1; i += 2) {
+    let index = i < 0 ? 1 : 2;
+    while (true) {
+      const field = getFieldByPoint(
+        board,
+        headField.coordinate.x,
+        headField.coordinate.y + i * index
+      );
+      if (!field) {
+        break;
+      }
+      const object = getFieldObject(board, field);
+      if (!object) {
+        moves.push(
+          getFieldByPoint(
+            board,
+            field.coordinate.x,
+            field.coordinate.y - (i < 0 ? 0 : 1)
+          )!
+        );
+      } else {
+        break;
+      }
+      index++;
+    }
+  }
+  return moves;
 }
 
 function getValidMoveTargetForBunny(board: Board, bunny: GameObject): Field[] {
