@@ -5,6 +5,6 @@ import CreatorScene from "./scenes/Creator";
 
 new Phaser.Game(
   Object.assign(config, {
-    scene: [CreatorScene],
+    scene: [CreatorScene, GameScene],
   })
 );

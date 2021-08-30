@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import Phaser, { Game } from "phaser";
 import {
   createField,
   createGameObject as cgo,
@@ -30,6 +30,10 @@ export default class Creator extends Phaser.Scene {
 
     const board = createStandardBoard();
     this.createBoard(board);
+
+    this.input.keyboard.on("keydown-SPACE", (event: any) => {
+      this.scene.start("GameScene", { gameObjects: board.gameObjects });
+    });
   }
 
   createBoard(board: Board): void {
@@ -42,6 +46,13 @@ export default class Creator extends Phaser.Scene {
       createField(this.graphics, field, startX, startY, width, height);
     });
 
+    const order = [
+      GameObjectType.Bunny,
+      GameObjectType.Mushroom,
+      GameObjectType.Fox,
+      GameObjectType.Fox,
+    ];
+    let nextUp = -1;
     this.addObject = (pointer: Phaser.Input.Pointer) => {
       const fieldX = Math.floor((pointer.x - startX) / width);
       const fieldY = Math.floor((pointer.y - startY) / height);
@@ -58,13 +69,47 @@ export default class Creator extends Phaser.Scene {
             existingObj.coordinates[0].x + "-" + existingObj.coordinates[0].y
           ];
         obj.destroy();
+      } else {
+        nextUp = -1;
       }
-      const newObj = createGameObject(GameObjectType.Bunny, [
-        field!.coordinate,
-      ]);
-      board.gameObjects.push(newObj);
-      const obj = cgo(this, newObj, board, startX, startY, width, height);
-      this.objMap[`${field?.coordinate.x}-${field?.coordinate.y}`] = obj;
+      if (pointer.button === 2) {
+        return;
+      }
+      while (true) {
+        nextUp++;
+        nextUp = nextUp % order.length;
+
+        const newObj = createGameObject(order[nextUp], [field!.coordinate]);
+        if (nextUp === order.length - 2) {
+          const newX = field!.coordinate.x + 1;
+          const newY = field!.coordinate.y;
+          const secondField = getFieldByPoint(board, newX, newY);
+          if (secondField && !getFieldObject(board, secondField)) {
+            newObj.coordinates.push({
+              x: newX,
+              y: newY,
+            });
+          } else {
+            continue;
+          }
+        } else if (nextUp === order.length - 1) {
+          const newX = field!.coordinate.x;
+          const newY = field!.coordinate.y + 1;
+          const secondField = getFieldByPoint(board, newX, newY);
+          if (secondField && !getFieldObject(board, secondField)) {
+            newObj.coordinates.push({
+              x: newX,
+              y: newY,
+            });
+          } else {
+            continue;
+          }
+        }
+        board.gameObjects.push(newObj);
+        const obj = cgo(this, newObj, board, startX, startY, width, height);
+        this.objMap[`${field?.coordinate.x}-${field?.coordinate.y}`] = obj;
+        break;
+      }
     };
   }
 }

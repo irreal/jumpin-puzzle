@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { createField, createGameObject } from "../gameObjects/createBoard";
+import { addGameObjects } from "../logic/board";
 import {
   addMaster1Objects,
   addTestObjects,
@@ -11,11 +12,21 @@ export default class Demo extends Phaser.Scene {
   constructor(private graphics: Phaser.GameObjects.Graphics) {
     super("GameScene");
   }
+  board?: Board;
 
   preload() {
     this.load.image("rabbit", "assets/rabbit.png");
     this.load.image("mushroom", "assets/mushroom.png");
     this.load.image("fox", "assets/fox.png");
+  }
+
+  init(data: any) {
+    if (!data || !data.gameObjects) {
+      console.log("well shit");
+      return;
+    }
+    this.board = createStandardBoard();
+    this.board = addGameObjects(this.board, data.gameObjects);
   }
 
   create() {
@@ -50,9 +61,9 @@ export default class Demo extends Phaser.Scene {
         }
       }
     );
-
-    const board = addMaster1Objects(createStandardBoard());
-    this.createBoard(board);
+    if (this.board) {
+      this.createBoard(this.board);
+    }
   }
 
   createBoard(board: Board): void {
