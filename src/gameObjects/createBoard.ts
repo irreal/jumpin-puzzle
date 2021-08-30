@@ -1,4 +1,5 @@
-import { Field } from "../logic/types";
+import { Board, Field, GameObject, GameObjectType } from "../logic/types";
+import { handleBunnyDrag, handleBunnyDrop } from "./bunnyDrag";
 
 export function createField(
   graphics: Phaser.GameObjects.Graphics,
@@ -33,4 +34,74 @@ export function createField(
       height
     );
   }
+}
+
+export function createGameObject(
+  scene: Phaser.Scene,
+  gameObject: GameObject,
+  board: Board,
+  startX: number,
+  startY: number,
+  width: number,
+  height: number
+) {
+  gameObject.coordinates.forEach((c, index) => {
+    switch (gameObject.type) {
+      case GameObjectType.Bunny:
+        let bunnySprite = scene.add
+          .image(
+            startX + c.x * width + width / 2,
+            startY + c.y * height + height / 2 - 15,
+            "rabbit"
+          )
+          .setInteractive();
+        bunnySprite.setScale(0.3);
+        scene.input.setDraggable(bunnySprite);
+        bunnySprite.setData("dragcallback", () => {
+          handleBunnyDrag(
+            scene,
+            bunnySprite,
+            startX,
+            startY,
+            width,
+            height,
+            gameObject,
+            board
+          );
+        });
+        bunnySprite.setData("dropcallback", (pointer: Phaser.Input.Pointer) => {
+          handleBunnyDrop(
+            scene,
+            bunnySprite,
+            startX,
+            startY,
+            width,
+            height,
+            pointer,
+            gameObject,
+            board
+          );
+        });
+        break;
+      case GameObjectType.Mushroom:
+        const mushroomSprite = scene.add.image(
+          startX + c.x * width + width / 2,
+          startY + c.y * height + height / 2 - 5,
+          "mushroom"
+        );
+        mushroomSprite.setScale(0.06);
+        break;
+      case GameObjectType.Fox:
+        const foxSprite = scene.add
+          .image(
+            startX + c.x * width + width / 2,
+            startY + c.y * height + height / 2,
+            "fox"
+          )
+          .setInteractive();
+        foxSprite.setScale(0.3);
+        scene.input.setDraggable(foxSprite);
+        break;
+    }
+  });
 }

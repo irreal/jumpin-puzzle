@@ -13,9 +13,9 @@ export type GameObject = {
   coordinates: Coordinate[];
 };
 export enum GameObjectType {
-  Bunny,
-  Mushroom,
-  Fox,
+  Bunny = "Bunny",
+  Mushroom = "Mushroom",
+  Fox = "Fox",
 }
 
 export type Coordinate = {

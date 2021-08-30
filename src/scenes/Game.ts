@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { createField } from "../gameObjects/createBoard";
+import { createField, createGameObject } from "../gameObjects/createBoard";
 import { addTestObjects, createStandardBoard } from "../logic/template-boards";
 import { Board, GameObject, GameObjectType } from "../logic/types";
 
@@ -16,7 +16,27 @@ export default class Demo extends Phaser.Scene {
 
   create() {
     this.graphics = this.add.graphics();
-
+    this.input.on(
+      "dragstart",
+      (_: any, gameObject: Phaser.GameObjects.GameObject) => {
+        const handler = gameObject.getData("dragcallback");
+        if (handler) {
+          handler();
+        }
+      }
+    );
+    this.input.on(
+      "dragend",
+      (
+        pointer: Phaser.Input.Pointer,
+        gameObject: Phaser.GameObjects.GameObject
+      ) => {
+        const handler = gameObject.getData("dropcallback");
+        if (handler) {
+          handler(pointer);
+        }
+      }
+    );
     this.input.on(
       "drag",
       function (pointer: any, gameObject: any, dragX: number, dragY: number) {
@@ -39,50 +59,7 @@ export default class Demo extends Phaser.Scene {
       createField(this.graphics, field, startX, startY, width, height);
     });
     board.gameObjects.forEach((go) => {
-      this.createGameObject(go, startX, startY, width, height);
-    });
-  }
-
-  createGameObject(
-    gameObject: GameObject,
-    startX: number,
-    startY: number,
-    width: number,
-    height: number
-  ) {
-    gameObject.coordinates.forEach((c, index) => {
-      switch (gameObject.type) {
-        case GameObjectType.Bunny:
-          let bunnySprite = this.add
-            .image(
-              startX + c.x * width + width / 2,
-              startY + c.y * height + height / 2 - 15,
-              "rabbit"
-            )
-            .setInteractive();
-          bunnySprite.setScale(0.3);
-          this.input.setDraggable(bunnySprite);
-          break;
-        case GameObjectType.Mushroom:
-          const mushroomSprite = this.add.image(
-            startX + c.x * width + width / 2,
-            startY + c.y * height + height / 2 - 5,
-            "mushroom"
-          );
-          mushroomSprite.setScale(0.06);
-          break;
-        case GameObjectType.Fox:
-          const foxSprite = this.add
-            .image(
-              startX + c.x * width + width / 2,
-              startY + c.y * height + height / 2,
-              "fox"
-            )
-            .setInteractive();
-          foxSprite.setScale(0.3);
-          this.input.setDraggable(foxSprite);
-          break;
-      }
+      createGameObject(this, go, board, startX, startY, width, height);
     });
   }
 }
