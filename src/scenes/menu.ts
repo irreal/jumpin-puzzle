@@ -16,15 +16,25 @@ export default class MenuScene extends Phaser.Scene {
     creatorButton.on("pointerdown", () => {
       this.scene.start("CreatorScene");
     });
+    creatorButton.on("pointerover", () => {
+      creatorButton.setStyle({ color: "black" });
+    });
+    creatorButton.on("pointerout", () => {
+      creatorButton.setStyle({ color: "white" });
+    });
 
     const playButton = this.add.text(100, 200, "Igraj postojeći nivo", {
       fontSize: "42px",
     });
     playButton.setInteractive();
     playButton.on("pointerdown", () => {
-      this.scene.start("GameScene", {
-        gameObjects: createObjectsFromShortString("0101024001200000300020000"),
-      });
+      this.scene.start("LevelSelectScene");
+    });
+    playButton.on("pointerover", () => {
+      playButton.setStyle({ color: "black" });
+    });
+    playButton.on("pointerout", () => {
+      playButton.setStyle({ color: "white" });
     });
   }
 }

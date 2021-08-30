@@ -18,6 +18,7 @@ export default class Demo extends Phaser.Scene {
   madeMoves = false;
   winText?: Phaser.GameObjects.GameObject;
   moveCountText?: Phaser.GameObjects.GameObject;
+  levelId?: string;
 
   moveCount = 0;
 
@@ -32,6 +33,9 @@ export default class Demo extends Phaser.Scene {
     if (!data || !data.gameObjects) {
       console.log("well shit");
       return;
+    }
+    if (data && data.id) {
+      this.levelId = data.id;
     }
     this.startingObjects = cloneGameObjects(data.gameObjects);
     this.board = createStandardBoard();
@@ -69,6 +73,7 @@ export default class Demo extends Phaser.Scene {
               fontSize: "50px",
               color: "#000000",
             });
+            this.recordMoveCountOnWin();
           } else {
             if (this.winText) {
               this.winText.destroy();
@@ -100,6 +105,12 @@ export default class Demo extends Phaser.Scene {
     this.add.text(10, 10, "Escape za restart nivoa ili izlazak u glavni meni", {
       font: "16px Arial",
     });
+    this.moveCountText = this.add.text(
+      40,
+      40,
+      `broj poteza: ${this.moveCount}`,
+      { fontSize: "40px" }
+    );
   }
 
   createBoard(board: Board): void {
@@ -118,16 +129,21 @@ export default class Demo extends Phaser.Scene {
 
   updateMoveCountText(): void {
     if (!this.moveCountText) {
-      this.moveCountText = this.add.text(
-        40,
-        40,
-        `broj poteza: ${this.moveCount}`,
-        { fontSize: "40px" }
-      );
-    } else {
-      (
-        this.moveCountText as Phaser.GameObjects.Text
-      ).text = `broj poteza: ${this.moveCount}`;
+      return;
     }
+    (
+      this.moveCountText as Phaser.GameObjects.Text
+    ).text = `broj poteza: ${this.moveCount}`;
+  }
+  recordMoveCountOnWin() {
+    if (!this.levelId) {
+      return;
+    }
+    const levelStats = JSON.parse(localStorage.getItem("level-stats") || "{}");
+    const stat = levelStats[this.levelId];
+    if (!stat || stat > this.moveCount) {
+      levelStats[this.levelId] = this.moveCount;
+    }
+    localStorage.setItem("level-stats", JSON.stringify(levelStats));
   }
 }

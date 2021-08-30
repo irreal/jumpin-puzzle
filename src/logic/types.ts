@@ -22,3 +22,9 @@ export type Coordinate = {
   x: number;
   y: number;
 };
+
+export type Level = {
+  gameObjects: GameObject[];
+  name: string;
+  id: string;
+};

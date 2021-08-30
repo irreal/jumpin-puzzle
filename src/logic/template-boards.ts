@@ -6,7 +6,8 @@ import {
 } from "./board";
 import { createField } from "./field";
 import { createGameObject } from "./game-object";
-import { Board, GameObjectType } from "./types";
+import { createObjectsFromShortString } from "./helper";
+import { Board, GameObjectType, Level } from "./types";
 
 export function createStandardBoard(): Board {
   return createBoard([
@@ -77,4 +78,29 @@ export function addTestObjects(board: Board): Board {
     ]),
   ]);
   return newBoard;
+}
+
+export function getAllLevels(): Level[] {
+  return [
+    {
+      name: "Dobrodošao zeče",
+      id: "1",
+      gameObjects: createObjectsFromShortString("0220000020000100000000000"),
+    },
+    {
+      name: "Dva zecova",
+      id: "2",
+      gameObjects: createObjectsFromShortString("0012100002000200000000000"),
+    },
+    {
+      name: "isto, samo potez više",
+      id: "4",
+      gameObjects: createObjectsFromShortString("0000000000100002020001020"),
+    },
+    {
+      name: "zajeban",
+      id: "99",
+      gameObjects: createObjectsFromShortString("0101024001200000300020000"),
+    },
+  ];
 }
