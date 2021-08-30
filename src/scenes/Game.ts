@@ -80,6 +80,8 @@ export default class Demo extends Phaser.Scene {
             this.winText = this.add.text(40, 300, "POBEDIO SI IGRICU, BRAVO!", {
               fontSize: "50px",
               color: "#000000",
+              stroke: "#ffffff",
+              strokeThickness: 5,
             });
             this.recordMoveCountOnWin();
           } else {
