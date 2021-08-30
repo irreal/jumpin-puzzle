@@ -163,3 +163,17 @@ function getValidMoveTargetForBunny(board: Board, bunny: GameObject): Field[] {
   }
   return moves;
 }
+
+export function cloneGameObjects(objects: GameObject[]): GameObject[] {
+  return objects.map((object) => {
+    return {
+      type: object.type,
+      coordinates: object.coordinates.map((coordinate) => {
+        return {
+          x: coordinate.x,
+          y: coordinate.y,
+        };
+      }),
+    };
+  });
+}

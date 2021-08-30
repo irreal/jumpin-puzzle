@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser";
-import { Board, Field, GameObject } from "./types";
+import { Board, Field, GameObject, GameObjectType } from "./types";
 
 export function cloneBoard(board: Board): Board {
   return {
@@ -62,4 +62,25 @@ export function getFieldObject(
       (c) => c.x === field.coordinate.x && c.y === field.coordinate.y
     )
   );
+}
+
+export function gameWon(board: Board): boolean {
+  if (board.gameObjects.length > 0) {
+    if (
+      board.gameObjects
+        .filter((go) => go.type === GameObjectType.Bunny)
+        .find((go) => {
+          const field = getFieldByPoint(
+            board,
+            go.coordinates[0].x,
+            go.coordinates[0].y
+          )!;
+          return !field.isHome;
+        })
+    ) {
+      return false;
+    }
+    return true;
+  }
+  return false;
 }

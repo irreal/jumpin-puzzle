@@ -27,12 +27,25 @@ export default class Creator extends Phaser.Scene {
     this.input.on("pointerdown", (pointer: any) => {
       this.addObject(pointer);
     });
-
+    this.input.keyboard.on("keydown-ESC", (event: any) => {
+      this.scene.start("MenuScene");
+    });
     const board = createStandardBoard();
     this.createBoard(board);
 
     this.input.keyboard.on("keydown-SPACE", (event: any) => {
-      this.scene.start("GameScene", { gameObjects: board.gameObjects });
+      this.scene.start("GameScene", {
+        gameObjects: board.gameObjects,
+      });
+    });
+    this.add.text(10, 10, "Levi klik vrti kroz objekte", {
+      font: "16px Arial",
+    });
+    this.add.text(10, 40, "Desni klik briše objekat", {
+      font: "16px Arial",
+    });
+    this.add.text(10, 70, "Space za početak igre", {
+      font: "16px Arial",
     });
   }
 

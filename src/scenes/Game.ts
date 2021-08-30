@@ -1,18 +1,22 @@
 import Phaser from "phaser";
 import { createField, createGameObject } from "../gameObjects/createBoard";
-import { addGameObjects } from "../logic/board";
+import { addGameObjects, gameWon } from "../logic/board";
+import { cloneGameObjects } from "../logic/game-object";
 import {
   addMaster1Objects,
   addTestObjects,
   createStandardBoard,
 } from "../logic/template-boards";
-import { Board } from "../logic/types";
+import { Board, GameObject } from "../logic/types";
 
 export default class Demo extends Phaser.Scene {
   constructor(private graphics: Phaser.GameObjects.Graphics) {
     super("GameScene");
   }
   board?: Board;
+  startingObjects?: GameObject[];
+  madeMoves = false;
+  winText?: Phaser.GameObjects.GameObject;
 
   preload() {
     this.load.image("rabbit", "assets/rabbit.png");
@@ -21,12 +25,15 @@ export default class Demo extends Phaser.Scene {
   }
 
   init(data: any) {
+    console.log("wtf", data);
     if (!data || !data.gameObjects) {
       console.log("well shit");
       return;
     }
+    this.startingObjects = cloneGameObjects(data.gameObjects);
     this.board = createStandardBoard();
     this.board = addGameObjects(this.board, data.gameObjects);
+    this.madeMoves = false;
   }
 
   create() {
@@ -46,9 +53,21 @@ export default class Demo extends Phaser.Scene {
         pointer: Phaser.Input.Pointer,
         gameObject: Phaser.GameObjects.GameObject
       ) => {
+        this.madeMoves = true;
         const handler = gameObject.getData("dropcallback");
         if (handler) {
           handler(pointer);
+          if (gameWon(this.board!)) {
+            this.winText = this.add.text(40, 300, "POBEDIO SI IGRICU, BRAVO!", {
+              fontSize: "50px",
+              color: "#000000",
+            });
+          } else {
+            if (this.winText) {
+              this.winText.destroy();
+              this.winText = undefined;
+            }
+          }
         }
       }
     );
@@ -61,9 +80,19 @@ export default class Demo extends Phaser.Scene {
         }
       }
     );
+    this.input.keyboard.on("keydown-ESC", (event: any) => {
+      if (this.madeMoves) {
+        this.scene.start("GameScene", { gameObjects: this.startingObjects });
+      } else {
+        this.scene.start("MenuScene");
+      }
+    });
     if (this.board) {
       this.createBoard(this.board);
     }
+    this.add.text(10, 30, "Escape za restart nivoa ili izlazak u glavni meni", {
+      font: "16px Arial",
+    });
   }
 
   createBoard(board: Board): void {
