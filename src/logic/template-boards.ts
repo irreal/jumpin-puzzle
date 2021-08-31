@@ -93,9 +93,24 @@ export function getAllLevels(): Level[] {
       gameObjects: createObjectsFromShortString("0012100002000200000000000"),
     },
     {
-      name: "isto, samo potez više",
+      name: "skok, skok",
+      id: "3",
+      gameObjects: createObjectsFromShortString("0102000200000000020000100"),
+    },
+    {
+      name: "zeka zeku preskače",
       id: "4",
       gameObjects: createObjectsFromShortString("0000000000100002020001020"),
+    },
+    {
+      name: "prvi put se zamisli",
+      id: "5",
+      gameObjects: createObjectsFromShortString("0010002000200002000010000"),
+    },
+    {
+      name: "šest poteza u šestom nivou",
+      id: "6",
+      gameObjects: createObjectsFromShortString("1200000200020100000000000"),
     },
     {
       name: "zajeban",
