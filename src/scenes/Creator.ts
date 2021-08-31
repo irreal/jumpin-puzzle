@@ -1,4 +1,5 @@
 import Phaser, { Game } from "phaser";
+import { nanoid } from "nanoid";
 import {
   createField,
   createGameObject as cgo,
@@ -19,6 +20,7 @@ export default class Creator extends Phaser.Scene {
     this.load.image("rabbit", "assets/rabbit.png");
     this.load.image("mushroom", "assets/mushroom.png");
     this.load.image("fox", "assets/fox.png");
+    this.load.image("save", "assets/save.png");
   }
 
   create() {
@@ -47,6 +49,26 @@ export default class Creator extends Phaser.Scene {
     this.add.text(10, 70, "Space za početak igre", {
       font: "16px Arial",
     });
+
+    const save = this.add
+      .image(70, 490, "save")
+      .setInteractive()
+      .on("pointerdown", () => {
+        const name = window.prompt("Naziv novog nivoa", "Moj sjajni nivo");
+        if (!name || name.trim().length === 0) {
+          return;
+        }
+        const levels = JSON.parse(
+          localStorage.getItem("custom-levels") || "[]"
+        );
+        levels.push({
+          name,
+          gameObjects: board.gameObjects,
+          id: "c-" + nanoid(),
+        });
+        localStorage.setItem("custom-levels", JSON.stringify(levels));
+        this.scene.start("LevelSelectScene");
+      });
   }
 
   createBoard(board: Board): void {

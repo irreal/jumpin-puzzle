@@ -12,7 +12,10 @@ export default class LevelSelectScene extends Phaser.Scene {
   }
 
   create() {
-    const levels = getAllLevels();
+    const customLevels = JSON.parse(
+      localStorage.getItem("custom-levels") || "[]"
+    );
+    const levels = [...getAllLevels(), ...customLevels];
     let x = 50;
     let y = 50;
     const levelStats = JSON.parse(
