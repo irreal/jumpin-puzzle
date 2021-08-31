@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { createField, createGameObject } from "../gameObjects/createBoard";
 import { addGameObjects, gameWon } from "../logic/board";
 import { cloneGameObjects } from "../logic/game-object";
+import { isTouch } from "../logic/helper";
 import {
   addMaster1Objects,
   addTestObjects,
@@ -27,6 +28,7 @@ export default class Demo extends Phaser.Scene {
     this.load.image("rabbit", "assets/rabbit.png");
     this.load.image("mushroom", "assets/mushroom.png");
     this.load.image("fox", "assets/fox.png");
+    this.load.image("restart", "assets/restart.png");
   }
 
   init(data: any) {
@@ -112,14 +114,30 @@ export default class Demo extends Phaser.Scene {
     if (this.board) {
       this.createBoard(this.board);
     }
-    this.add.text(
-      10,
-      550,
-      "Escape za restart nivoa ili izlazak u glavni meni",
-      {
-        font: "16px Arial",
-      }
-    );
+    if (isTouch()) {
+      this.add
+        .image(50, 550, "restart")
+        .setScale(0.4)
+        .setInteractive()
+        .on("pointerdown", () => {
+          if (this.madeMoves) {
+            this.scene.start("GameScene", {
+              gameObjects: this.startingObjects,
+            });
+          } else {
+            this.scene.start("MenuScene");
+          }
+        });
+    } else {
+      this.add.text(
+        10,
+        550,
+        "Escape za restart nivoa ili izlazak u glavni meni",
+        {
+          font: "16px Arial",
+        }
+      );
+    }
     if (this.levelName) {
       this.add.text(10, 10, this.levelName, {
         font: "16px Arial",

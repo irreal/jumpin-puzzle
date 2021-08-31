@@ -10,6 +10,13 @@
     }
   </style>
   <script type="module" src="/src/index.ts"></script>
+  <script>
+    // Check touch input
+    var IS_TOUCH = false;
+    window.addEventListener('touchstart', function () {
+      IS_TOUCH = true;
+    });
+  </script>
 </head>
 
 <body>

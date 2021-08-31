@@ -1,3 +1,4 @@
+/// <reference path="../lib.d.ts" />
 import { GameObject, GameObjectType } from "./types";
 import { createGameObject } from "./game-object";
 
@@ -29,4 +30,8 @@ export function createObjectsFromShortString(level: string): GameObject[] {
     }
   }
   return objects;
+}
+
+export function isTouch(): boolean {
+  return window.IS_TOUCH;
 }
