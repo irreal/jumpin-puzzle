@@ -113,6 +113,16 @@ export function getAllLevels(): Level[] {
       gameObjects: createObjectsFromShortString("1200000200020100000000000"),
     },
     {
+      name: "i sedam u sedmom",
+      id: "7",
+      gameObjects: createObjectsFromShortString("0000000000000100220000021"),
+    },
+    {
+      name: "nema krsta bez tri prsta... i 3 zeke",
+      id: "8",
+      gameObjects: createObjectsFromShortString("0000000002121210000000000"),
+    },
+    {
       name: "zajeban",
       id: "99",
       gameObjects: createObjectsFromShortString("0101024001200000300020000"),
