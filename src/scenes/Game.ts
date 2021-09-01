@@ -32,9 +32,7 @@ export default class Demo extends Phaser.Scene {
   }
 
   init(data: any) {
-    console.log("wtf", data);
     if (!data || !data.gameObjects) {
-      console.log("well shit");
       return;
     }
     if (data && data.id) {
@@ -105,10 +103,10 @@ export default class Demo extends Phaser.Scene {
       }
     );
     this.input.keyboard.on("keydown-ESC", (event: any) => {
-      if (this.madeMoves) {
+      if (this.madeMoves && !this.winText) {
         this.scene.start("GameScene", { gameObjects: this.startingObjects });
       } else {
-        this.scene.start("MenuScene");
+        this.scene.start("LevelSelectScene");
       }
     });
     if (this.board) {
@@ -120,12 +118,12 @@ export default class Demo extends Phaser.Scene {
         .setScale(0.4)
         .setInteractive()
         .on("pointerdown", () => {
-          if (this.madeMoves) {
+          if (this.madeMoves && !this.winText) {
             this.scene.start("GameScene", {
               gameObjects: this.startingObjects,
             });
           } else {
-            this.scene.start("MenuScene");
+            this.scene.start("LevelSelectScene");
           }
         });
     } else {
