@@ -123,6 +123,66 @@ export function getAllLevels(): Level[] {
       gameObjects: createObjectsFromShortString("0000000002121210000000000"),
     },
     {
+      name: "starter 9",
+      id: "9",
+      gameObjects: createObjectsFromShortString("1202100200000000000000100"),
+    },
+    {
+      name: "starter 10",
+      id: "10",
+      gameObjects: createObjectsFromShortString("1212120000000000000000000"),
+    },
+    {
+      name: "starter 11",
+      id: "11",
+      gameObjects: createObjectsFromShortString("1201000200000010002000000"),
+    },
+    {
+      name: "starter 12",
+      id: "12",
+      gameObjects: createObjectsFromShortString("0000000000110010200000220"),
+    },
+    {
+      name: "junior 13",
+      id: "13",
+      gameObjects: createObjectsFromShortString("0002002130002000000000000"),
+    },
+    {
+      name: "junior 14",
+      id: "14",
+      gameObjects: createObjectsFromShortString("0001003000022020000000000"),
+    },
+    {
+      name: "junior 15",
+      id: "15",
+      gameObjects: createObjectsFromShortString("0024000000002000020100000"),
+    },
+    {
+      name: "junior 16",
+      id: "16",
+      gameObjects: createObjectsFromShortString("0100020000200000420000000"),
+    },
+    {
+      name: "junior 17",
+      id: "17",
+      gameObjects: createObjectsFromShortString("0404000002200021000000000"),
+    },
+    {
+      name: "junior 18",
+      id: "18",
+      gameObjects: createObjectsFromShortString("0000000300200203000020010"),
+    },
+    {
+      name: "junior 19",
+      id: "19",
+      gameObjects: createObjectsFromShortString("0020000100000420020000000"),
+    },
+    {
+      name: "junior 20",
+      id: "20",
+      gameObjects: createObjectsFromShortString("0100000000202000420000000"),
+    },
+    {
       name: "zajeban",
       id: "99",
       gameObjects: createObjectsFromShortString("0101024001200000300020000"),
