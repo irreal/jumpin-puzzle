@@ -58,5 +58,28 @@ export default class LevelSelectScene extends Phaser.Scene {
     this.input.keyboard.on("keydown-ESC", (event: any) => {
       this.scene.start("MenuScene");
     });
+    let startX = 0;
+    let startY = 0;
+    let isDown = false;
+    let oldX = 0;
+    let oldY = 0;
+    this.input.on("pointerdown", (pointer: any) => {
+      startX = pointer.x;
+      startY = pointer.y;
+      isDown = true;
+    });
+    this.input.on("pointerup", (pointer: any) => {
+      isDown = false;
+      oldX = this.cameras.main.scrollX;
+      oldY = this.cameras.main.scrollY;
+    });
+    this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
+      if (!isDown) {
+        return;
+      }
+      const x = pointer.x - startX;
+      const y = pointer.y - startY;
+      this.cameras.main.setScroll(0, oldY - y);
+    });
   }
 }
