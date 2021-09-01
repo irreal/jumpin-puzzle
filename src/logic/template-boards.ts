@@ -83,12 +83,12 @@ export function addTestObjects(board: Board): Board {
 export function getAllLevels(): Level[] {
   return [
     {
-      name: "Dobrodošao zeče",
+      name: "Uvod u skakutave zečeve",
       id: "1",
       gameObjects: createObjectsFromShortString("0220000020000100000000000"),
     },
     {
-      name: "Dva zecova",
+      name: "Dva zeca",
       id: "2",
       gameObjects: createObjectsFromShortString("0012100002000200000000000"),
     },
@@ -103,42 +103,42 @@ export function getAllLevels(): Level[] {
       gameObjects: createObjectsFromShortString("0000000000100002020001020"),
     },
     {
-      name: "prvi put se zamisli",
+      name: "zamisli se",
       id: "5",
       gameObjects: createObjectsFromShortString("0010002000200002000010000"),
     },
     {
-      name: "šest poteza u šestom nivou",
+      name: "reši u šest poteza",
       id: "6",
       gameObjects: createObjectsFromShortString("1200000200020100000000000"),
     },
     {
-      name: "i sedam u sedmom",
+      name: "Sedam skokova do pobede",
       id: "7",
       gameObjects: createObjectsFromShortString("0000000000000100220000021"),
     },
     {
-      name: "nema krsta bez tri prsta... i 3 zeke",
+      name: "Sada sa 3 zeke",
       id: "8",
       gameObjects: createObjectsFromShortString("0000000002121210000000000"),
     },
     {
-      name: "starter 9",
+      name: "Početni 9",
       id: "9",
       gameObjects: createObjectsFromShortString("1202100200000000000000100"),
     },
     {
-      name: "starter 10",
+      name: "Početni 10",
       id: "10",
       gameObjects: createObjectsFromShortString("1212120000000000000000000"),
     },
     {
-      name: "starter 11",
+      name: "Početni 11",
       id: "11",
       gameObjects: createObjectsFromShortString("1201000200000010002000000"),
     },
     {
-      name: "starter 12",
+      name: "Početni 12",
       id: "12",
       gameObjects: createObjectsFromShortString("0000000000110010200000220"),
     },
@@ -183,7 +183,7 @@ export function getAllLevels(): Level[] {
       gameObjects: createObjectsFromShortString("0100000000202000420000000"),
     },
     {
-      name: "zajeban",
+      name: "veoma težak nivo",
       id: "99",
       gameObjects: createObjectsFromShortString("0101024001200000300020000"),
     },
